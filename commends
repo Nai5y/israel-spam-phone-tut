@@ -1,0 +1,46 @@
+תביא לי את הבקשה ששלחתי לך כמו הבקשה הזאת     {"name": "Netfree", "url": "https://netfree.link/api/user/verify-phone/get-call", "type": "json", "data": {"agreeTou": True, "phone": "PHONE_INTL"}},
+
+פקודות לAI
+
+תעשה לי את זה כמו הקוד הזה // ייבוא הספרייה node-fetch שמוגדרת ב-dependencies שלך
+import fetch from 'node-fetch';
+
+export const name = "Name";
+
+export async function execute(phoneNumber) {
+    const url = 'https://www.globes.co.il/news/login-2022/ajax_handler.ashx?get-value-type';
+
+    // התאמת מספר הטלפון לפורמט ישראלי מקומי (המתחיל ב-0) עבור גלובס
+    let formattedPhone = phoneNumber;
+    if (phoneNumber.startsWith('972')) {
+        formattedPhone = '0' + phoneNumber.slice(3);
+    } else if (phoneNumber.startsWith('+972')) {
+        formattedPhone = '0' + phoneNumber.slice(4);
+    }
+
+    // יצירת גוף הבקשה בפורמט x-www-form-urlencoded המתאים לגלובס
+    const payload = new URLSearchParams();
+    payload.append('value', formattedPhone); // שימוש במספר שהתקבל מהסורס של הספאמר
+    payload.append('value_type', '');
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Origin': 'https://www.globes.co.il',
+                'Referer': 'https://www.globes.co.il/',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            },
+            body: payload.toString()
+        });
+
+        // קריאת התגובה כטקסט פשוט (מאחר וגלובס לעיתים מחזירים מחרוזת פשוטה)
+        const data = await response.text();
+        
+        // מחזיר ללוג של הספאמר הראשי את תוצאת השליחה
+        console.log(`[Globes] Status: ${response.status} | Response:`, data);
+    } catch (error) {
+        console.error('[Globes] Error occurred:', error.message);
+    }
+}
