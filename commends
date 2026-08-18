@@ -2,6 +2,7 @@
 
 פקודות לAI
 
+
 תעשה לי את זה כמו הקוד הזה // ייבוא הספרייה node-fetch שמוגדרת ב-dependencies שלך
 import fetch from 'node-fetch';
 
@@ -43,4 +44,4 @@ export async function execute(phoneNumber) {
     } catch (error) {
         console.error('[Globes] Error occurred:', error.message);
     }
-}
+} ותעביר לJS
