@@ -3,7 +3,15 @@
 פקודות לAI
 
 
-תעשה לי את זה כמו הקוד הזה // ייבוא הספרייה node-fetch שמוגדרת ב-dependencies שלך
+{
+  "name": "Netfree",
+  "url": "https://netfree.link/api/user/verify-phone/get-call",
+  "type": "json",
+  "data": {
+    "agreeTou": true,
+    "phone": "PHONE_INTL"
+  }
+} תעשה לי את זה כמו הקוד הזה // ייבוא הספרייה node-fetch שמוגדרת ב-dependencies שלך
 import fetch from 'node-fetch';
 
 export const name = "Name";
@@ -44,4 +52,4 @@ export async function execute(phoneNumber) {
     } catch (error) {
         console.error('[Globes] Error occurred:', error.message);
     }
-} ותעביר לJS
+} ותעביר לJS ולא תמונה 
