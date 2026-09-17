@@ -3,53 +3,35 @@
 פקודות לAI
 
 
-{
-  "name": "Netfree",
-  "url": "https://netfree.link/api/user/verify-phone/get-call",
-  "type": "json",
-  "data": {
-    "agreeTou": true,
-    "phone": "PHONE_INTL"
-  }
-} תעשה לי את זה כמו הקוד הזה // ייבוא הספרייה node-fetch שמוגדרת ב-dependencies שלך
+// ייבוא הספרייה node-fetch שמוגדרת ב-dependencies שלך
 import fetch from 'node-fetch';
 
-export const name = "Name";
+export const name = "Netfree";
 
-export async function execute(phoneNumber) {
-    const url = 'https://www.globes.co.il/news/login-2022/ajax_handler.ashx?get-value-type';
+export async function execute() {
+    const url = "https://netfree.link/api/user/verify-phone/get-call";
 
-    // התאמת מספר הטלפון לפורמט ישראלי מקומי (המתחיל ב-0) עבור גלובס
-    let formattedPhone = phoneNumber;
-    if (phoneNumber.startsWith('972')) {
-        formattedPhone = '0' + phoneNumber.slice(3);
-    } else if (phoneNumber.startsWith('+972')) {
-        formattedPhone = '0' + phoneNumber.slice(4);
-    }
-
-    // יצירת גוף הבקשה בפורמט x-www-form-urlencoded המתאים לגלובס
-    const payload = new URLSearchParams();
-    payload.append('value', formattedPhone); // שימוש במספר שהתקבל מהסורס של הספאמר
-    payload.append('value_type', '');
+    // גוף הבקשה בפורמט JSON
+    const bodyData = {
+        agreeTou: true,
+        phone: "PHONE_INTL"
+    };
 
     try {
         const response = await fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Origin': 'https://www.globes.co.il',
-                'Referer': 'https://www.globes.co.il/',
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                'Content-Type': 'application/json'
             },
-            body: payload.toString()
+            body: JSON.stringify(bodyData)
         });
 
-        // קריאת התגובה כטקסט פשוט (מאחר וגלובס לעיתים מחזירים מחרוזת פשוטה)
-        const data = await response.text();
-        
-        // מחזיר ללוג של הספאמר הראשי את תוצאת השליחה
-        console.log(`[Globes] Status: ${response.status} | Response:`, data);
+        // קריאת התגובה כטקסט פשוט
+        const responseData = await response.text();
+
+        // לוג תוצאות
+        console.log(`[Netfree] Status: ${response.status} | Response:`, responseData);
     } catch (error) {
-        console.error('[Globes] Error occurred:', error.message);
+        console.error('[Netfree] Error occurred:', error.message);
     }
-} ותעביר לJS ולא תמונה 
+}
